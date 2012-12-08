@@ -31,7 +31,7 @@ var page_getKnockoutInfo = function() {
 	}
 	catch(err){
 		//when you don't select a dom node but plain text  (rare)
-		return {info:"Please select a dom node"}; 
+		return {info:"Please select a dom node with ko data."}; 
 	}
 	for (i = 0; i < props.length; ++i){
 		//you probably want to see the value of the index instead of the ko.observable function
