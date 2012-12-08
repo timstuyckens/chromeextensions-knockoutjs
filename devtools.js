@@ -4,7 +4,7 @@ var page_getKnockoutInfo = function() {
 		//console.log(m);
 	};
 	if( !window.ko){
-		return {error:"knockout.js is not used in the page (ko is undefined)"};
+		return {error:"knockout.js is not used in the page (ko is undefined). Maybe u are using iFrames, if so, browse to the url of the frame and try again."};
 	}
 	
 	var isString = function (obj) {	// _ implementation
@@ -22,7 +22,7 @@ var page_getKnockoutInfo = function() {
 	var copy = { __proto__: null };
 	var copy2 = { __proto__: null };
 	debug($0);
-	var context = window.jQuery && $0 ?ko.contextFor($0) : {};
+	var context = $0 ?ko.contextFor($0) : {};
 	debug("context ");
 	debug(context);
 
@@ -43,7 +43,7 @@ var page_getKnockoutInfo = function() {
 		}
 	}
 
-	var data = window.jQuery && $0 ?ko.toJS(ko.dataFor($0)) : {};
+	var data = $0 ?ko.toJS(ko.dataFor($0)) : {};
 	if(isString(data)){	//don't do getOwnPropertyNames if it's not an object
 		copy["vm_string"]=data;
 	}
