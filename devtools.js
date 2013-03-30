@@ -1,5 +1,6 @@
 // The function is executed in the context of the inspected page.
 var page_getKnockoutInfo = function() {
+	"use strict";
 	var debug=function(m){
 		//console.log(m);
 	};
@@ -8,8 +9,8 @@ var page_getKnockoutInfo = function() {
 	}
 	
 	var isString = function (obj) {	// _ implementation
-	  return toString.call(obj) == '[object String]';
-	}
+		return toString.call(obj) == '[object String]';
+	};
 	
 	function isFunction(functionToCheck) {
 		var getType = {};
@@ -28,21 +29,20 @@ var page_getKnockoutInfo = function() {
 
 	try{
 		var props = Object.getOwnPropertyNames(context);
+		for (i = 0; i < props.length; ++i){
+			//you probably want to see the value of the index instead of the ko.observable function
+			if(props[i]==="$index"){
+				copy["$index()"] = context[props[i]]();	
+			}
+			else{
+				copy[props[i]] = context[props[i]];
+			}
+		}
 	}
 	catch(err){
 		//when you don't select a dom node but plain text  (rare)
 		return {info:"Please select a dom node with ko data."}; 
 	}
-	for (i = 0; i < props.length; ++i){
-		//you probably want to see the value of the index instead of the ko.observable function
-		if(props[i]==="$index"){
-			copy["$index()"] = context[props[i]]();	
-		}
-		else{
-			copy[props[i]] = context[props[i]];
-		}
-	}
-
 	var data = $0 ?ko.toJS(ko.dataFor($0)) : {};
 	if(isString(data)){	//don't do getOwnPropertyNames if it's not an object
 		copy["vm_string"]=data;
@@ -62,17 +62,17 @@ var page_getKnockoutInfo = function() {
 			//set the whole vm in a expression (collapsable). contains even the functions.
 			copy["vm_toJS"]=copy2;
 	
-		  }
+		}
 		catch(err){
 			//I don't know the type but I'll try to display the data
 			copy["vm_no_object"]=data;
-		 }
+		}
 	}
 	return copy;
-}
-var pluginTitle="Knockout context"
+};
+var pluginTitle="Knockout context";
 chrome.devtools.panels.elements.createSidebarPane(pluginTitle,function(sidebar) {
-
+	"use strict";
 	function updateElementProperties() {
 		//pase a function as a string that will be executed later on by chrome
 		sidebar.setExpression("(" + page_getKnockoutInfo.toString() + ")()");
