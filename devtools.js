@@ -4,8 +4,22 @@ var page_getKnockoutInfo = function() {
 	var debug=function(m){
 		//console.log(m);
 	};
-	if( !window.ko){
-		return {error:"knockout.js is not used in the page (ko is undefined). Maybe u are using iFrames, if so, browse to the url of the frame and try again."};
+	
+	var ko = window.ko;
+	if( !ko){
+		if(typeof window.require === 'function') {
+			try{
+				ko = require('ko');
+			} catch(e) { /*ingore */ }
+			if(!ko){
+				try{
+					ko = require('knockout');
+				} catch(e) { /*ingore */ }
+			}
+		}
+		if(!ko) {
+			return {error:"knockout.js is not used in the page (ko is undefined). Maybe u are using iFrames, if so, browse to the url of the frame and try again."};
+		}
 	}
 	
 	var isString = function (obj) {	// _ implementation
