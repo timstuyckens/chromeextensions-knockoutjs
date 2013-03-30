@@ -48,6 +48,9 @@ var page_getKnockoutInfo = function() {
 			if(props[i]==="$index"){
 				copy["$index()"] = context[props[i]]();	
 			}
+			else if(props[i]==="$root"){
+				copy["$root_toJS"] = ko.toJS(context[props[i]]);	
+			}
 			else{
 				copy[props[i]] = context[props[i]];
 			}
