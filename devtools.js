@@ -49,7 +49,12 @@ var page_getKnockoutInfo = function() {
 				copy["$index()"] = context[props[i]]();	
 			}
 			else if(props[i]==="$root"){
-				copy["$root_toJS"] = ko.toJS(context[props[i]]);	
+				if(context[props[i]] != window){
+					copy["$root_toJS"] = ko.toJS(context[props[i]]);
+				}
+				else{
+					copy["$root"]="(Global window object)";
+				}
 			}
 			else{
 				copy[props[i]] = context[props[i]];
@@ -58,6 +63,7 @@ var page_getKnockoutInfo = function() {
 	}
 	catch(err){
 		//when you don't select a dom node but plain text  (rare)
+		debug(err);
 		return {info:"Please select a dom node with ko data."}; 
 	}
 	var data = $0 ?ko.toJS(ko.dataFor($0)) : {};
