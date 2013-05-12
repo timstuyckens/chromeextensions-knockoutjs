@@ -38,6 +38,7 @@ $(function(){
 				ko.extenders.ChromeExtensionLogChange = function(target, option) {
 					target.subscribe(function(newValue) {
 						console.debug(option, newValue);
+						console.markTimeline(option+" changed (ko)");
 					});
 					return target;
 				};
