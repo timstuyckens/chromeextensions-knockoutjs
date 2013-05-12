@@ -112,3 +112,11 @@ chrome.devtools.panels.elements.createSidebarPane(pluginTitle,function(sidebar) 
   });
   
 });
+
+
+// knockout panel
+var knockoutPanel = chrome.devtools.panels.create(
+  "KnockoutJS",
+  "logo.png",
+  "panel.html"
+);
