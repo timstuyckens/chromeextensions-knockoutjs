@@ -121,6 +121,6 @@ if(shouldPanelBeShown){
 	var knockoutPanel = chrome.devtools.panels.create(
 	  "KnockoutJS",
 	  "logo.png",
-	  "panel.html"
+	  "/pages/panel.html"
 	);
 }

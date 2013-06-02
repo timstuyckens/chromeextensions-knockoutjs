@@ -60,7 +60,6 @@ $(function(){
 				}
 			}
 			
-			
 			//create the extender in the context of the page
 			var chromeExtensionLogChangeFun=function(target, option) {
 				var indent="   ";
@@ -135,5 +134,5 @@ $(function(){
 	chromeExtension.watchRefresh(function(){
 		$("#enableTracing").text("Enable Tracing").removeAttr("disabled");
 	});
-	
+
 });

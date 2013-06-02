@@ -1,0 +1,68 @@
+<html>
+<head>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap-responsive.min.css" rel="stylesheet">	
+	<style>
+		.spacer {
+			margin-top: 40px; 
+		}
+	
+		#timelineImg{
+			width: 650px;
+			height: 300px;
+		}
+		
+		@media all and (max-width: 800px) {
+			#timelineImg{
+				width: 450px;
+				height: 200px;
+			}
+		}
+	</style>
+</head>
+<body>
+
+	<div class="container-fluid">
+	
+		<div class="row-fluid spacer">
+			<div class="span10 offset1">
+				<p>
+					When you enable tracing, the extension will attach a <a href="http://knockoutjs.com/documentation/extenders.html"> extender </a> to every subscribable in every viewmodel that is on the page on that moment.<br/>
+					When a observable or computed changes, you can see the changes in the console. 
+				<p>
+			</div>
+		</div>
+		<div class="row-fluid ">
+			<div class="span4 offset5">
+				<button id="enableTracing" class="btn btn-large btn-primary"> Enable Tracing</button>
+			</div>
+		</div>
+		<div class="row-fluid spacer">
+			<div class="span10 offset1">
+				<h4>Tips</h4>
+				<div>
+					<p>The extension uses <code>console.debug</code>, you can use the 'debug' logging category of the chrome console for filtering.</p>
+					<img src="img/consoledebug.jpg" alt="console debug"/>
+				</div>
+				<div class="spacer">
+					<p>Changes to an observable are also visible in the timeline. This is done by the <code>console.markTimeline</code> method.</p>
+					<img src="img/markedTimeline.jpg" alt="console debug" id="timelineImg"/>
+				</div>
+			</div>
+		</div>
+	
+		<div class="row-fluid spacer">
+			<div class="span8 offset1">
+				<div class="alert alert-info">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					If you don't like this panel, you can disable it in the options of the plugin.
+				</div>
+			</div>
+		</div>		
+	</div>
+	
+	<script src="js/lib/jquery-2.0.0.min.js"></script>
+	<script src="js/lib/bootstrap.min.js"></script>
+	<script src="js/panel.js"></script>
+</body>
+</html>
