@@ -62,13 +62,20 @@ $(function(){
 			
 			
 			//create the extender in the context of the page
-			ko.extenders.ChromeExtensionLogChange = function(target, option) {
+			var chromeExtensionLogChangeFun=function(target, option) {
+				var indent="   ";
+				var total="";
+				for(var i=0;i<option.nestingLevel;i++){
+					total+=indent;
+				}
+				
 				target.subscribe(function(newValue) {
-					console.debug(option, newValue);
-					console.markTimeline(option+" changed (ko)");
+					console.debug(total,option.propName, newValue);
+					console.markTimeline(option.propName+" changed (ko)");
 				});
 				return target;
 			};
+			ko.extenders.ChromeExtensionLogChange = chromeExtensionLogChangeFun;
 			
 			
 			//crazy code that will loop all nodes an get all the knockout binded viewmodels on a page
@@ -76,13 +83,15 @@ $(function(){
 			var items = document.getElementsByTagName("*");
 			for (var i = 0; i < items.length; i++) {
 				try{
-					var theVm=ko.contextFor(items[i]).$data;	
+					var theContextFor=ko.contextFor(items[i]);
+					var theVm=theContextFor.$data;	
+					var theNestingLevel=theContextFor.$parents.length;
 					var isAlreadyInArray=false;
 					for(var j=0;j<viewModels.length;j++)
-						if(viewModels[j]==theVm)
+						if(viewModels[j].viewmodel==theVm)
 							isAlreadyInArray=true;
 					if(!isAlreadyInArray)
-						viewModels.push(theVm);
+						viewModels.push({viewmodel:theVm,level:theNestingLevel});
 				}
 				catch(toBeIgnoredExc){}
 			}
@@ -92,7 +101,8 @@ $(function(){
 			}
 			//add extender to each observable/array/computed that will log changes 
 			for(var k=0;k<viewModels.length;k++){
-				var tempVm=viewModels[k];
+				var tempVm=viewModels[k].viewmodel;
+				var nestingLevel=viewModels[k].level;
 				for (var vmProperty in tempVm) {
 					try{
 						if (!tempVm.hasOwnProperty(vmProperty)) 
@@ -101,7 +111,7 @@ $(function(){
 							continue;
 						if(!ko.isSubscribable(tempVm[vmProperty]))
 							continue;
-						tempVm[vmProperty].extend({ChromeExtensionLogChange: vmProperty});
+						tempVm[vmProperty].extend({ChromeExtensionLogChange: {propName:vmProperty,nestingLevel:nestingLevel}});
 					}
 					catch(unableToExtendException){
 						console.log("Unable to extend the viewmodel",vmProperty,tempVm);
