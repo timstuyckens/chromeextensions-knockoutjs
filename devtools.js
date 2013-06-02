@@ -113,10 +113,14 @@ chrome.devtools.panels.elements.createSidebarPane(pluginTitle,function(sidebar) 
   
 });
 
-
-// knockout panel
-var knockoutPanel = chrome.devtools.panels.create(
-  "KnockoutJS",
-  "logo.png",
-  "panel.html"
-);
+var localStorageValue=localStorage["shouldPanelBeShown"];
+var shouldPanelBeShown=true;
+if(localStorageValue)
+	shouldPanelBeShown=JSON.parse(localStorageValue);
+if(shouldPanelBeShown){
+	var knockoutPanel = chrome.devtools.panels.create(
+	  "KnockoutJS",
+	  "logo.png",
+	  "panel.html"
+	);
+}

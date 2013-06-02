@@ -7,5 +7,6 @@
    "background": {
     "scripts": ["background.js"]
   },
-  "manifest_version": 2
+  "manifest_version": 2,
+  "options_page": "options.html"
 }
