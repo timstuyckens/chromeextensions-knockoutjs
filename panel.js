@@ -23,6 +23,21 @@ $(function(){
 				JSON.stringify(args) +
 				'));', cb);
 		},
+		watchRefresh: function (cb) {
+			var port = chrome.extension.connect();
+			port.postMessage({
+				action: 'register',
+				inspectedTabId: chrome.devtools.inspectedWindow.tabId
+			});
+			port.onMessage.addListener(function(msg) {
+				if (msg === 'refresh' && cb) {
+					cb();
+				}
+			});
+			port.onDisconnect.addListener(function (a) {
+				console.log(a);
+			});
+		}
 	};
 	var attachLoggingExtender=function(globalWindowObj){
 		try{
@@ -106,6 +121,9 @@ $(function(){
 	
 	$("#enableTracing").click(function(){
 		chromeExtension.eval(attachLoggingExtender,true,chromeExtensionEvalCallback);
+	});
+	chromeExtension.watchRefresh(function(){
+		$("#enableTracing").text("Enable Tracing").removeAttr("disabled");
 	});
 	
 });
