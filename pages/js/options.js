@@ -4,10 +4,13 @@ $(function(){
 	
 	var restorePreviousSettings=function(){
 		var localStorageValue=localStorage[shouldPanelBeShownKey];
-		if(!localStorageValue)
-			return;
-		var settingValue=JSON.parse(localStorageValue);
-		$("#shouldPanelBeShownCheckbox").attr('checked', settingValue);
+		if(localStorageValue){
+			var settingValue=JSON.parse(localStorageValue);
+			$("#shouldPanelBeShownCheckbox").attr('checked', settingValue);		
+		}
+		else{
+			$("#shouldPanelBeShownCheckbox").prop('checked', true);
+		}
 	};
 	
 	restorePreviousSettings();
