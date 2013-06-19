@@ -50,7 +50,13 @@ var page_getKnockoutInfo = function() {
 			}
 			else if(props[i]==="$root"){
 				if(context[props[i]] != window){
-					copy["$root_toJS"] = ko.toJS(context[props[i]]);
+					try{
+						copy["$root_toJS"] = ko.toJS(context[props[i]]);
+					}
+					catch(toJsErr){
+						copy["$root_toJS"]="Error: ko.toJS("+props[i]+")";
+						copy["$root_toJS_exc"]=toJsErr;
+					}
 				}
 				else{
 					copy["$root"]="(Global window object)";
@@ -66,30 +72,36 @@ var page_getKnockoutInfo = function() {
 		debug(err);
 		return {info:"Please select a dom node with ko data.",ExtensionError:err}; 
 	}
-	var data = $0 ?ko.toJS(ko.dataFor($0)) : {};
-	if(isString(data)){	//don't do getOwnPropertyNames if it's not an object
-		copy["vm_string"]=data;
-	}
-	else{
-		try{
-			var props2 = Object.getOwnPropertyNames(data);		
-			for (i = 0; i < props2.length; ++i){
-				//create a empty object that contains the whole vm in a expression. contains even the functions.
-				copy2[props2[i]] = data[props2[i]];	
-				//show the basic properties of the vm directly, without the need to collapse anything
-				if(!isFunction(data[props2[i]])){
-					//chrome sorts alphabetically, make sure the properties come first
-					copy[" "+props2[i]] = data[props2[i]];	
-				}
-			}
-			//set the whole vm in a expression (collapsable). contains even the functions.
-			copy["vm_toJS"]=copy2;
+	try{
+		var data = $0 ?ko.toJS(ko.dataFor($0)) : {};
 	
+		if(isString(data)){	//don't do getOwnPropertyNames if it's not an object
+			copy["vm_string"]=data;
 		}
-		catch(err){
-			//I don't know the type but I'll try to display the data
-			copy["vm_no_object"]=data;
+		else{
+			try{
+				var props2 = Object.getOwnPropertyNames(data);		
+				for (i = 0; i < props2.length; ++i){
+					//create a empty object that contains the whole vm in a expression. contains even the functions.
+					copy2[props2[i]] = data[props2[i]];	
+					//show the basic properties of the vm directly, without the need to collapse anything
+					if(!isFunction(data[props2[i]])){
+						//chrome sorts alphabetically, make sure the properties come first
+						copy[" "+props2[i]] = data[props2[i]];	
+					}
+				}
+				//set the whole vm in a expression (collapsable). contains even the functions.
+				copy["vm_toJS"]=copy2;
+		
+			}
+			catch(err){
+				//I don't know the type but I'll try to display the data
+				copy["vm_no_object"]=data;
+			}
 		}
+	}
+	catch(error){
+		copy["error"]=error;
 	}
 	return copy;
 };
@@ -119,8 +131,8 @@ if(localStorageValue)
 	shouldPanelBeShown=JSON.parse(localStorageValue);
 if(shouldPanelBeShown){
 	var knockoutPanel = chrome.devtools.panels.create(
-	  "KnockoutJS",
-	  "logo.png",
-	  "/pages/panel.html"
+		"KnockoutJS",
+		"logo.png",
+		"/pages/panel.html"
 	);
 }
