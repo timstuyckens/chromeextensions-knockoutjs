@@ -64,7 +64,7 @@ var page_getKnockoutInfo = function() {
 	catch(err){
 		//when you don't select a dom node but plain text  (rare)
 		debug(err);
-		return {info:"Please select a dom node with ko data."}; 
+		return {info:"Please select a dom node with ko data.",ExtensionError:err}; 
 	}
 	var data = $0 ?ko.toJS(ko.dataFor($0)) : {};
 	if(isString(data)){	//don't do getOwnPropertyNames if it's not an object
