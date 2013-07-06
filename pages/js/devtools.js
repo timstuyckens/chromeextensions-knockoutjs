@@ -1,10 +1,9 @@
 // The function is executed in the context of the inspected page.
-var page_getKnockoutInfo = function() {
+var page_getKnockoutInfo = function(shouldSerialize) {
 	"use strict";
 	var debug=function(m){
 		//console.log(m);
 	};
-	
 	var ko = window.ko;
 	if( !ko){
 		if(typeof window.require === 'function') {
@@ -51,7 +50,12 @@ var page_getKnockoutInfo = function() {
 			else if(props[i]==="$root"){
 				if(context[props[i]] != window){
 					try{
-						copy["$root_toJS"] = ko.toJS(context[props[i]]);
+						if(shouldSerialize){
+							copy["$root_toJS"] = ko.toJS(context[props[i]]);
+						}
+						else{
+							copy["$root"] = context[props[i]];
+						}
 					}
 					catch(toJsErr){
 						copy["$root_toJS"]="Error: ko.toJS("+props[i]+")";
@@ -72,8 +76,10 @@ var page_getKnockoutInfo = function() {
 		debug(err);
 		return {info:"Please select a dom node with ko data.",ExtensionError:err}; 
 	}
+	
 	try{
-		var data = $0 ?ko.toJS(ko.dataFor($0)) : {};
+		var dataFor= $0 ? ko.dataFor($0): {};
+		var data =shouldSerialize? ko.toJS(dataFor) : ko.utils.unwrapObservable(dataFor);
 	
 		if(isString(data)){	//don't do getOwnPropertyNames if it's not an object
 			copy["vm_string"]=data;
@@ -83,11 +89,16 @@ var page_getKnockoutInfo = function() {
 				var props2 = Object.getOwnPropertyNames(data);		
 				for (i = 0; i < props2.length; ++i){
 					//create a empty object that contains the whole vm in a expression. contains even the functions.
-					copy2[props2[i]] = data[props2[i]];	
+					copy2[props2[i]] = ko.utils.unwrapObservable(data[props2[i]]);	
 					//show the basic properties of the vm directly, without the need to collapse anything
-					if(!isFunction(data[props2[i]])){
-						//chrome sorts alphabetically, make sure the properties come first
-						copy[" "+props2[i]] = data[props2[i]];	
+					if(shouldSerialize){//if you don't serialize, the isFunction check is useless cause observables are functions
+						if(!isFunction(data[props2[i]])){
+							//chrome sorts alphabetically, make sure the properties come first
+							copy[" "+props2[i]] = data[props2[i]];	
+						}
+					}
+					else{	
+						copy[" "+props2[i]] =  ko.utils.unwrapObservable(data[props2[i]]);	
 					}
 				}
 				//set the whole vm in a expression (collapsable). contains even the functions.
@@ -106,11 +117,17 @@ var page_getKnockoutInfo = function() {
 	return copy;
 };
 var pluginTitle="Knockout context";
+
+var shouldDoKOtoJS=true;
+var shouldDoKOtoJSValue=localStorage["shouldDoKOtoJS"];
+if(shouldDoKOtoJSValue)
+	shouldDoKOtoJS=JSON.parse(shouldDoKOtoJSValue);
+
 chrome.devtools.panels.elements.createSidebarPane(pluginTitle,function(sidebar) {
 	"use strict";
 	function updateElementProperties() {
 		//pase a function as a string that will be executed later on by chrome
-		sidebar.setExpression("(" + page_getKnockoutInfo.toString() + ")()");
+		sidebar.setExpression("(" + page_getKnockoutInfo.toString() + ")("+shouldDoKOtoJS+")");
 	}
 	//initial
 	updateElementProperties();
