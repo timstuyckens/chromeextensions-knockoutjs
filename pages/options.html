@@ -26,6 +26,14 @@
 			  <fieldset>
 				<legend>KnockoutJS context debugger options</legend>
 
+				<span class="help-block">
+					If you experience crashes you propably have a non serializable viewmodel. You can turn off the serialization.
+					The extension default does ko.toJS(ko.dataFor($0)) and ko.toJS(ko.contextFor($0).$root)
+				</span>
+				<label class="checkbox">
+				  <input type="checkbox" id="shouldDoKOtoJSCheckbox"> Serialize (provides the best visualization)
+				</label>	
+				
 				<span class="help-block">If you really don't like the extra panel you can disable it here.</span>
 				<label class="checkbox">
 				  <input type="checkbox" id="shouldPanelBeShownCheckbox"> Show KnockoutJS panel.
