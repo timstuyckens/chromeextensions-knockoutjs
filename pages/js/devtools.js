@@ -18,7 +18,7 @@ var page_getKnockoutInfo = function() {
 			}
 		}
 		if(!ko) {
-			return {error:"knockout.js is not used in the page (ko is undefined). Maybe u are using iFrames, if so, browse to the url of the frame and try again."};
+			return {error:"knockout.js is not used in the page (ko is undefined). Maybe you are using iFrames, if so, browse to the url of the frame and try again."};
 		}
 	}
 	
