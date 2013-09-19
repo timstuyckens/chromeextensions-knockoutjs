@@ -19,8 +19,21 @@ $(function(){
 				$(val.domSelector).prop('checked', val.defaultValue);
 			}		
 		});
+	};
 	
-
+	var setValueSafelyInLocalStorage=function(key,notStringifiedValue){
+		try{
+			localStorage[key]=JSON.stringify(notStringifiedValue);
+			$("#infoMessage").closest(".alert").removeClass("alert-error");
+			$("#infoMessage").closest(".alert").find("h4").text("Saved");
+			return true;
+		}
+		catch(e){
+			$infoMessage.html("Unable to change the setting. Probably because you have blocked localstorage/cookies in the privacy settings of Chrome.");
+			$("#infoMessage").closest(".alert").removeClass("alert-success").addClass("alert-error");
+			$("#infoMessage").closest(".alert").find("h4").text("Error");
+			return false;
+		}
 	};
 	
 	restorePreviousSettings();
@@ -31,19 +44,20 @@ $(function(){
 		$(".alert").removeClass("hide");
 		var el=$(this);
 		var val=el.is(':checked');
-		localStorage[shouldPanelBeShownKey]=JSON.stringify(val);
-		if(val){
-			$infoMessage.html("Happy tracing");
-		}
-		else{
-			$infoMessage.html("If you disabled it because it didn't worked for you, please file a bug on the <a href='https://github.com/timstuyckens/chromeextensions-knockoutjs'>github page </a>");
+		if(setValueSafelyInLocalStorage(shouldPanelBeShownKey,val)){
+			if(val){
+				$infoMessage.html("Happy tracing");
+			}
+			else{
+				$infoMessage.html("If you disabled it because it didn't worked for you, please file a bug on the <a href='https://github.com/timstuyckens/chromeextensions-knockoutjs'>github page </a>");
+			}
 		}
 	});
 
 	$("#shouldDoKOtoJSCheckbox").change(function(){
 		var el=$(this);
 		var val=el.is(':checked');
-		localStorage[shouldDoKOtoJSKey]=JSON.stringify(val);
+		setValueSafelyInLocalStorage(shouldDoKOtoJSKey,val);
 	});	
 	
 });

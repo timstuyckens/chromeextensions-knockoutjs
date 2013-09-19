@@ -117,9 +117,14 @@ var page_getKnockoutInfo = function(shouldSerialize) {
 	return copy;
 };
 var pluginTitle="Knockout context";
-
 var shouldDoKOtoJS=true;
-var shouldDoKOtoJSValue=localStorage["shouldDoKOtoJS"];
+var localStorageError="Unable to get value from localstorage. Check the privacy settings of chrome";
+try{
+	var shouldDoKOtoJSValue=localStorage["shouldDoKOtoJS"];
+}
+catch(e){
+	console.log(localStorageError,e);
+}
 if(shouldDoKOtoJSValue)
 	shouldDoKOtoJS=JSON.parse(shouldDoKOtoJSValue);
 
@@ -142,7 +147,13 @@ chrome.devtools.panels.elements.createSidebarPane(pluginTitle,function(sidebar) 
   
 });
 
-var localStorageValue=localStorage["shouldPanelBeShown"];
+var localStorageValue=undefined;
+try{
+	localStorageValue = localStorage["shouldPanelBeShown"];
+}
+catch(e){
+	console.log(localStorageError,e);
+}
 var shouldPanelBeShown=true;
 if(localStorageValue)
 	shouldPanelBeShown=JSON.parse(localStorageValue);
@@ -153,3 +164,4 @@ if(shouldPanelBeShown){
 		"/pages/panel.html"
 	);
 }
+
