@@ -121,12 +121,13 @@ var shouldDoKOtoJS=true;
 var localStorageError="Unable to get value from localstorage. Check the privacy settings of chrome";
 try{
 	var shouldDoKOtoJSValue=localStorage["shouldDoKOtoJS"];
+	if(shouldDoKOtoJSValue)
+		shouldDoKOtoJS=JSON.parse(shouldDoKOtoJSValue);
 }
 catch(e){
 	console.log(localStorageError,e);
 }
-if(shouldDoKOtoJSValue)
-	shouldDoKOtoJS=JSON.parse(shouldDoKOtoJSValue);
+
 
 chrome.devtools.panels.elements.createSidebarPane(pluginTitle,function(sidebar) {
 	"use strict";
