@@ -70,7 +70,7 @@ $(function(){
 				
 				target.subscribe(function(newValue) {
 					console.debug(total,option.propName, newValue);
-					console.markTimeline(option.propName+" changed (ko)");
+					console.timeStamp(option.propName+" changed (ko)");
 				});
 				return target;
 			};
