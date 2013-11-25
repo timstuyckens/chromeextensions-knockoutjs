@@ -134,6 +134,14 @@ chrome.devtools.panels.elements.createSidebarPane(pluginTitle,function(sidebar) 
 	function updateElementProperties() {
 		//pase a function as a string that will be executed later on by chrome
 		sidebar.setExpression("(" + page_getKnockoutInfo.toString() + ")("+shouldDoKOtoJS+")");
+		
+		
+		var nodeVM="";
+		nodeVM+="Node.prototype.editVM=(function(){;";
+		nodeVM+=	"return ko.bindingProvider.instance.getBindings($0,ko.contextFor($0));";
+		nodeVM+="}).bind(console)();";
+
+		chrome.devtools.inspectedWindow.eval(nodeVM);
 	}
 	//initial
 	updateElementProperties();
@@ -148,7 +156,7 @@ chrome.devtools.panels.elements.createSidebarPane(pluginTitle,function(sidebar) 
   
 });
 
-chrome.devtools.inspectedWindow.eval("Node.prototype.editVM=function(prop,value){ko.bindingProvider.instance.getBindings(this,ko.contextFor(this))[prop](value);}");
+
 
 var localStorageValue=undefined;
 try{
