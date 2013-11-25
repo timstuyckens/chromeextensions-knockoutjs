@@ -148,6 +148,8 @@ chrome.devtools.panels.elements.createSidebarPane(pluginTitle,function(sidebar) 
   
 });
 
+chrome.devtools.inspectedWindow.eval("Node.prototype.editVM=function(prop,value){ko.bindingProvider.instance.getBindings(this,ko.contextFor(this))[prop](value);}");
+
 var localStorageValue=undefined;
 try{
 	localStorageValue = localStorage["shouldPanelBeShown"];
