@@ -116,6 +116,42 @@ var page_getKnockoutInfo = function(shouldSerialize) {
 	}
 	return copy;
 };
+
+var createEditMethods=function(){
+	var ko = window.ko;
+	if( !ko){
+		if(typeof window.require === 'function') {
+			try{
+				ko = require('ko');
+			} catch(e) { /*ingore */ }
+			if(!ko){
+				try{
+					ko = require('knockout');
+				} catch(e) { /*ingore */ }
+			}
+		}
+		if(!ko) {
+			console.log("knockout.js is not used in the page (ko is undefined). maybe you are using iframes, if so, browse to the url of the frame and try again.");
+			return ;
+		}
+	}
+	try{
+		window.editBinding=(function(){
+			return ko.bindingProvider.instance.getBindings($0,ko.contextFor($0));
+		}).bind(console)();
+		
+		window.edit$data=(function(){
+			return ko.contextFor($0).$data;
+		}).bind(console)();
+		
+		window.edit$root=(function(){
+			return ko.contextFor($0).$root;
+		}).bind(console)();
+    }
+	catch(e){
+		console.log(e,'Exception editBinding during creation');
+	}
+};
 var pluginTitle="Knockout context";
 var shouldDoKOtoJS=true;
 var localStorageError="Unable to get value from localstorage. Check the privacy settings of chrome";
@@ -129,6 +165,15 @@ catch(e){
 }
 
 
+var shouldAddEditMethodsValue=undefined;
+try{
+	shouldAddEditMethodsValue = localStorage["shouldAddEditMethods"];
+}
+catch(e){
+	console.log(localStorageError,e);
+}
+
+
 chrome.devtools.panels.elements.createSidebarPane(pluginTitle,function(sidebar) {
 	"use strict";
 	function updateElementProperties() {
@@ -136,12 +181,10 @@ chrome.devtools.panels.elements.createSidebarPane(pluginTitle,function(sidebar) 
 		sidebar.setExpression("(" + page_getKnockoutInfo.toString() + ")("+shouldDoKOtoJS+")");
 		
 		
-		var nodeVM="";
-		nodeVM+="Node.prototype.editVM=(function(){;";
-		nodeVM+=	"return ko.bindingProvider.instance.getBindings($0,ko.contextFor($0));";
-		nodeVM+="}).bind(console)();";
-
-		chrome.devtools.inspectedWindow.eval(nodeVM);
+		if(shouldAddEditMethodsValue){
+			console.log(createEditMethods.toString());
+			chrome.devtools.inspectedWindow.eval("("+createEditMethods.toString()+ ")()");
+		}
 	}
 	//initial
 	updateElementProperties();
@@ -154,8 +197,9 @@ chrome.devtools.panels.elements.createSidebarPane(pluginTitle,function(sidebar) 
       updateElementProperties();
   });
   
+  
+  
 });
-
 
 
 var localStorageValue=undefined;
