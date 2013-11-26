@@ -1,6 +1,6 @@
 {
   "name": "Knockoutjs context debugger",
-  "version": "2.5.4",
+  "version": "2.6.0",
   "description": "Shows the knockout context & data for the selected dom node in a sidebar of the elements pane.",
   "devtools_page": "pages/devtools.html",
   "permissions": ["tabs"],
