@@ -2,12 +2,14 @@
 $(function(){
 	var shouldPanelBeShownKey="shouldPanelBeShown";
 	var shouldDoKOtoJSKey="shouldDoKOtoJS";
+	var shouldAddEditMethodsKey="shouldAddEditMethods";
 	
 	var restorePreviousSettings=function(){
 	
 		var checkBoxes=[
 			{settingKey:shouldPanelBeShownKey,domSelector:"#shouldPanelBeShownCheckbox",defaultValue:true},
-			{settingKey:shouldDoKOtoJSKey,domSelector:"#shouldDoKOtoJSCheckbox",defaultValue:true}
+			{settingKey:shouldDoKOtoJSKey,domSelector:"#shouldDoKOtoJSCheckbox",defaultValue:true},
+			{settingKey:shouldAddEditMethodsKey,domSelector:"#shouldAddEditMethodsCheckbox",defaultValue:false},
 		];
 		$.each(checkBoxes,function(i,val){
 			var localStorageValue=localStorage[val.settingKey];
@@ -58,6 +60,12 @@ $(function(){
 		var el=$(this);
 		var val=el.is(':checked');
 		setValueSafelyInLocalStorage(shouldDoKOtoJSKey,val);
+	});	
+
+	$("#shouldAddEditMethodsCheckbox").change(function(){
+		var el=$(this);
+		var val=el.is(':checked');
+		setValueSafelyInLocalStorage(shouldAddEditMethodsKey,val);
 	});	
 	
 });
