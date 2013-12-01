@@ -148,7 +148,6 @@ var createEditMethods=function(){
 		}).bind(console)();
     }
 	catch(e){
-		console.log(e,'Exception editBinding during creation. Try restarting devtools or log issue (github.com/timstuyckens/chromeextensions-knockoutjs)');
 	}
 };
 var pluginTitle="Knockout context";
