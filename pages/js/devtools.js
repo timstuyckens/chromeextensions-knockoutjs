@@ -148,7 +148,7 @@ var createEditMethods=function(){
 		}).bind(console)();
     }
 	catch(e){
-		console.log(e,'Exception editBinding during creation');
+		console.log(e,'Exception editBinding during creation. Try restarting devtools or log issue (github.com/timstuyckens/chromeextensions-knockoutjs)');
 	}
 };
 var pluginTitle="Knockout context";
@@ -165,8 +165,11 @@ catch(e){
 
 
 var shouldAddEditMethodsValue=undefined;
+var shouldAddEditMethod=false;
 try{
 	shouldAddEditMethodsValue = localStorage["shouldAddEditMethods"];
+	if(shouldAddEditMethodsValue)
+		shouldAddEditMethod=JSON.parse(shouldAddEditMethodsValue);
 }
 catch(e){
 	console.log(localStorageError,e);
@@ -180,7 +183,7 @@ chrome.devtools.panels.elements.createSidebarPane(pluginTitle,function(sidebar) 
 		sidebar.setExpression("(" + page_getKnockoutInfo.toString() + ")("+shouldDoKOtoJS+")");
 		
 		
-		if(shouldAddEditMethodsValue){
+		if(shouldAddEditMethod){
 			chrome.devtools.inspectedWindow.eval("("+createEditMethods.toString()+ ")()");
 		}
 	}
