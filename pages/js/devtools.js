@@ -131,7 +131,6 @@ var createEditMethods=function(){
 			}
 		}
 		if(!ko) {
-			console.log("knockout.js is not used in the page (ko is undefined). maybe you are using iframes, if so, browse to the url of the frame and try again.");
 			return ;
 		}
 	}
@@ -182,7 +181,6 @@ chrome.devtools.panels.elements.createSidebarPane(pluginTitle,function(sidebar) 
 		
 		
 		if(shouldAddEditMethodsValue){
-			console.log(createEditMethods.toString());
 			chrome.devtools.inspectedWindow.eval("("+createEditMethods.toString()+ ")()");
 		}
 	}
