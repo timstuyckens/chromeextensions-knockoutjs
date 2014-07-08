@@ -5,14 +5,20 @@ var page_getKnockoutInfo = function(shouldSerialize) {
 		//console.log(m);
 	};
 	var ko = window.ko;
+	
 	if( !ko){
 		if(typeof window.require === 'function') {
+			var isDefinedAvailable=typeof window.require.defined === 'function';
 			try{
-				ko = require('ko');
+				if( (isDefinedAvailable && require.defined('ko')) || !isDefinedAvailable ){
+					ko = require('ko');
+				}
 			} catch(e) { /*ingore */ }
 			if(!ko){
 				try{
-					ko = require('knockout');
+					if( (isDefinedAvailable && require.defined('knockout')) || !isDefinedAvailable ){
+						ko = require('knockout');
+					}
 				} catch(e) { /*ingore */ }
 			}
 		}
