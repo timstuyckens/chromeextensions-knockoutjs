@@ -51,7 +51,7 @@ var page_getKnockoutInfo = function(shouldSerialize) {
 		for (i = 0; i < props.length; ++i){
 			//you probably want to see the value of the index instead of the ko.observable function
 			if(props[i]==="$index"){
-				copy["$index()"] = context[props[i]]();	
+				copy["$index()"] = ko.utils.unwrapObservable(context[props[i]]);	
 			}
 			else if(props[i]==="$root"){
 				if(context[props[i]] != window){
@@ -73,7 +73,12 @@ var page_getKnockoutInfo = function(shouldSerialize) {
 				}
 			}
 			else{
-				copy[props[i]] = context[props[i]];
+				if(props[i]==="$cell"){//repeat binding support
+					copy[props[i]] = shouldSerialize? ko.toJS(context[props[i]]) : ko.utils.unwrapObservable(context[props[i]]);
+				}
+				else{
+					copy[props[i]] = ko.utils.unwrapObservable(context[props[i]]);	
+				}
 			}
 		}
 	}
