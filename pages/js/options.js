@@ -2,27 +2,29 @@
 $(function(){
 	var shouldPanelBeShownKey="shouldPanelBeShown";
 	var shouldDoKOtoJSKey="shouldDoKOtoJS";
+	var shouldGetVMPathKey="shouldGetVMPath";
 	var shouldAddEditMethodsKey="shouldAddEditMethods";
-	
+
 	var restorePreviousSettings=function(){
-	
+
 		var checkBoxes=[
 			{settingKey:shouldPanelBeShownKey,domSelector:"#shouldPanelBeShownCheckbox",defaultValue:true},
 			{settingKey:shouldDoKOtoJSKey,domSelector:"#shouldDoKOtoJSCheckbox",defaultValue:true},
+			{settingKey:shouldGetVMPathKey,domSelector:"#shouldGetVMPathCheckbox",defaultValue:true},
 			{settingKey:shouldAddEditMethodsKey,domSelector:"#shouldAddEditMethodsCheckbox",defaultValue:false},
 		];
 		$.each(checkBoxes,function(i,val){
 			var localStorageValue=localStorage[val.settingKey];
 			if(localStorageValue){
 				var settingValue=JSON.parse(localStorageValue);
-				$(val.domSelector).attr('checked', settingValue);		
+				$(val.domSelector).attr('checked', settingValue);
 			}
 			else{
 				$(val.domSelector).prop('checked', val.defaultValue);
-			}		
+			}
 		});
 	};
-	
+
 	var setValueSafelyInLocalStorage=function(key,notStringifiedValue){
 		try{
 			localStorage[key]=JSON.stringify(notStringifiedValue);
@@ -37,9 +39,9 @@ $(function(){
 			return false;
 		}
 	};
-	
+
 	restorePreviousSettings();
-	
+
 	var $infoMessage=$("#infoMessage");
 	//when checkbox changes, directly save value in localstorage
 	$("#shouldPanelBeShownCheckbox").change(function(){
@@ -60,12 +62,18 @@ $(function(){
 		var el=$(this);
 		var val=el.is(':checked');
 		setValueSafelyInLocalStorage(shouldDoKOtoJSKey,val);
-	});	
+	});
+
+	$("#shouldGetVMPathCheckbox").change(function(){
+		var el=$(this);
+		var val=el.is(':checked');
+		setValueSafelyInLocalStorage(shouldGetVMPathKey,val);
+	});
 
 	$("#shouldAddEditMethodsCheckbox").change(function(){
 		var el=$(this);
 		var val=el.is(':checked');
 		setValueSafelyInLocalStorage(shouldAddEditMethodsKey,val);
-	});	
-	
+	});
+
 });

@@ -3,7 +3,7 @@
 	<title>KnockoutJS context debugger options</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap-responsive.min.css" rel="stylesheet">	
+    <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 	<style>
 		.center {
 			 float: none;
@@ -11,7 +11,7 @@
 			 margin-right: auto;
 		}
 		.spacer {
-			margin-top: 40px; 
+			margin-top: 40px;
 		}
 	</style>
 </head>
@@ -32,31 +32,40 @@
 				</span>
 				<label class="checkbox">
 				  <input type="checkbox" id="shouldDoKOtoJSCheckbox"> Serialize (provides the best visualization)
-				</label>	
-				
+				</label>
+
 				<span class="help-block">If you really don't like the extra panel you can disable it here.</span>
 				<label class="checkbox">
 				  <input type="checkbox" id="shouldPanelBeShownCheckbox"> Show KnockoutJS panel.
 				</label>
 
+				<span class="help-block">
+					Evaluate the ViewModel path from $root to $data in selected element's binding context.
+					The path appears as first item in "Knockout context" inspector (with empty "" key).
+					This can be slow on very large or deeply nested models.
+				</span>
+				<label class="checkbox">
+				  <input type="checkbox" id="shouldGetVMPathCheckbox"> Display the ViewModel path
+				</label>
+
 				<span class="help-block">Enable editBindings, edit$data, edit$root </span>
 				<label class="checkbox">
 				  <input type="checkbox" id="shouldAddEditMethodsCheckbox"> Add snippets for <a href="https://github.com/timstuyckens/chromeextensions-knockoutjs/wiki/Editing-viewmodel-binding-values" target="_blank">manipulation viemodel/binding</a> for the selected DOM element.
-				</label>	
+				</label>
 			  </fieldset>
 			</form>
 			<br/><br/><br/><br/><br/>
-			
+
 			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 				<input type="hidden" name="cmd" value="_s-xclick">
 				<input type="hidden" name="hosted_button_id" value="F6EG6CEJ5QV2E">
 				<table>
 				<tr><td><input type="hidden" name="on0" value="Donation">Donation</td></tr><tr><td><select name="os0">
-					<option value="I appreciate your work">I appreciate your work €1,00 EUR</option>
-					<option value="Have a beer">Have a beer €2,50 EUR</option>
-					<option value="Increased developer happiness">Increased developer happiness €5,00 EUR</option>
-					<option value="Could not work without it">Could not work without it €10,00 EUR</option>
-					<option value="Enterprise">Enterprise €50,00 EUR</option>
+					<option value="I appreciate your work">I appreciate your work ï¿½1,00 EUR</option>
+					<option value="Have a beer">Have a beer ï¿½2,50 EUR</option>
+					<option value="Increased developer happiness">Increased developer happiness ï¿½5,00 EUR</option>
+					<option value="Could not work without it">Could not work without it ï¿½10,00 EUR</option>
+					<option value="Enterprise">Enterprise ï¿½50,00 EUR</option>
 				</select> </td></tr>
 				</table>
 				<input type="hidden" name="currency_code" value="EUR">
@@ -67,7 +76,7 @@
 
 
 
-			
+
 			<div class="alert alert-success hide">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
 				<h4>Saved</h4> <span id="infoMessage"> </span>
