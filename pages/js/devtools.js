@@ -203,13 +203,10 @@ chrome.devtools.panels.elements.createSidebarPane(pluginTitle,function(sidebar) 
 	chrome.devtools.panels.elements.onSelectionChanged.addListener(updateElementProperties);
 	sidebar.onShown.addListener(updateElementProperties);
 
-  //listen to a message send by the background page (when the chrome windows's focus changes) 
-  chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
-      updateElementProperties();
-  });
-  
-  
-  
+	//listen to a message send by the background page (when the chrome windows's focus changes) 
+	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+		updateElementProperties();
+	});
 });
 
 
