@@ -3,9 +3,11 @@
 chrome.windows.onFocusChanged.addListener(function(windowId) {
 	//send message to devtool.js. Then you can re-evaluate ko.dataFor($0)
 	chrome.tabs.query({active: true}, function(tabs) {
-		if(tabs.length > 0) {
+		if(tabs && tabs.length > 0) {
 			var tab =  tabs[0];
-			chrome.tabs.sendMessage(tab.id, {})
+			if(tab.id >= 0) {
+				chrome.tabs.sendMessage(tab.id, {})
+			}
 		}
 	});
 });
