@@ -3,7 +3,7 @@ $(function(){
 	//abstraction wrapper around extension api, stolen from batarang :)
 	var chromeExtension= {
 		sendRequest: function (requestName, cb) {
-			chrome.extension.sendRequest({
+			chrome.runtime.sendMessage({
 			script: requestName,
 			tab: chrome.devtools.inspectedWindow.tabId
 			}, cb || function () {});
@@ -24,7 +24,7 @@ $(function(){
 				'));', cb);
 		},
 		watchRefresh: function (cb) {
-			var port = chrome.extension.connect();
+			var port = chrome.runtime.connect();
 			port.postMessage({
 				action: 'register',
 				inspectedTabId: chrome.devtools.inspectedWindow.tabId
