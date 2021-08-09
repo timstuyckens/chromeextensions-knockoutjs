@@ -227,4 +227,3 @@ if(shouldPanelBeShown){
 		"/pages/panel.html"
 	);
 }
-

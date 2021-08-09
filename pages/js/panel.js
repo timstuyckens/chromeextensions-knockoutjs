@@ -134,5 +134,4 @@ $(function(){
 	chromeExtension.watchRefresh(function(){
 		$("#enableTracing").text("Enable Tracing").removeAttr("disabled");
 	});
-
 });

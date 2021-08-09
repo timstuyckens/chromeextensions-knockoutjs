@@ -26,13 +26,13 @@ $(function(){
 	var setValueSafelyInLocalStorage=function(key,notStringifiedValue){
 		try{
 			localStorage[key]=JSON.stringify(notStringifiedValue);
-			$("#infoMessage").closest(".alert").removeClass("alert-error");
+			$("#infoMessage").closest(".alert").removeClass("alert-danger");
 			$("#infoMessage").closest(".alert").find("h4").text("Saved");
 			return true;
 		}
 		catch(e){
 			$infoMessage.html("Unable to change the setting. Probably because you have blocked localstorage/cookies in the privacy settings of Chrome.");
-			$("#infoMessage").closest(".alert").removeClass("alert-success").addClass("alert-error");
+			$("#infoMessage").closest(".alert").removeClass("alert-success").addClass("alert-danger");
 			$("#infoMessage").closest(".alert").find("h4").text("Error");
 			return false;
 		}
@@ -43,7 +43,7 @@ $(function(){
 	var $infoMessage=$("#infoMessage");
 	//when checkbox changes, directly save value in localstorage
 	$("#shouldPanelBeShownCheckbox").change(function(){
-		$(".alert").removeClass("hide");
+		$(".alert").removeClass("d-none");
 		var el=$(this);
 		var val=el.is(':checked');
 		if(setValueSafelyInLocalStorage(shouldPanelBeShownKey,val)){
