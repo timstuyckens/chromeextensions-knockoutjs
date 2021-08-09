@@ -2,6 +2,10 @@
   "name": "Knockoutjs context debugger",
   "version": "2.6.3",
   "description": "Shows the knockout context & data for the selected dom node in a sidebar of the elements pane.",
+  "icons": {
+    "48": "icons/logo-48.png",
+    "96": "icons/logo-96.png"
+  },
   "devtools_page": "pages/devtools.html",
   "permissions": ["tabs"],
    "background": {
