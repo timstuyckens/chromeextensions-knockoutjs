@@ -1,12 +1,12 @@
 
-$(function(){
+$(function () {
 	//abstraction wrapper around extension api, stolen from batarang :)
-	var chromeExtension= {
+	var chromeExtension = {
 		sendRequest: function (requestName, cb) {
 			chrome.runtime.sendMessage({
-			script: requestName,
-			tab: chrome.devtools.inspectedWindow.tabId
-			}, cb || function () {});
+				script: requestName,
+				tab: chrome.devtools.inspectedWindow.tabId
+			}, cb || function () { });
 		},
 
 		eval: function (fn, args, cb) {
@@ -29,7 +29,7 @@ $(function(){
 				action: 'register',
 				inspectedTabId: chrome.devtools.inspectedWindow.tabId
 			});
-			port.onMessage.addListener(function(msg) {
+			port.onMessage.addListener(function (msg) {
 				if (msg === 'refresh' && cb) {
 					cb();
 				}
@@ -39,100 +39,99 @@ $(function(){
 			});
 		}
 	};
-	var attachLoggingExtender=function(globalWindowObj){
-		try{
-			
+	var attachLoggingExtender = function (globalWindowObj) {
+		try {
+
 			//require js support
 			var ko = window.ko;
-			if( !ko){
-				if(typeof window.require === 'function') {
-					try{
+			if (!ko) {
+				if (typeof window.require === 'function') {
+					try {
 						ko = require('ko');
-					} catch(e) { /*ingore */ }
-					if(!ko){
-						try{
+					} catch (e) { /*ingore */ }
+					if (!ko) {
+						try {
 							ko = require('knockout');
-						} catch(e) { /*ingore */ }
+						} catch (e) { /*ingore */ }
 					}
 				}
-				if(!ko) {
-					return ;
+				if (!ko) {
+					return;
 				}
 			}
-			
+
 			//create the extender in the context of the page
-			var chromeExtensionLogChangeFun=function(target, option) {
-				var indent="   ";
-				var total="";
-				for(var i=0;i<option.nestingLevel;i++){
-					total+=indent;
+			var chromeExtensionLogChangeFun = function (target, option) {
+				var indent = "   ";
+				var total = "";
+				for (var i = 0; i < option.nestingLevel; i++) {
+					total += indent;
 				}
-				
-				target.subscribe(function(newValue) {
-					console.debug(total,option.propName, newValue);
-					console.timeStamp(option.propName+" changed (ko)");
+
+				target.subscribe(function (newValue) {
+					console.debug(total, option.propName, newValue);
+					console.timeStamp(option.propName + " changed (ko)");
 				});
 				return target;
 			};
 			ko.extenders.ChromeExtensionLogChange = chromeExtensionLogChangeFun;
-			
-			
+
+
 			//crazy code that will loop all nodes an get all the knockout binded viewmodels on a page
-			var viewModels=[];
+			var viewModels = [];
 			var items = document.getElementsByTagName("*");
 			for (var i = 0; i < items.length; i++) {
-				try{
-					var theContextFor=ko.contextFor(items[i]);
-					var theVm=theContextFor.$data;	
-					var theNestingLevel=theContextFor.$parents.length;
-					var isAlreadyInArray=false;
-					for(var j=0;j<viewModels.length;j++)
-						if(viewModels[j].viewmodel==theVm)
-							isAlreadyInArray=true;
-					if(!isAlreadyInArray)
-						viewModels.push({viewmodel:theVm,level:theNestingLevel});
+				try {
+					var theContextFor = ko.contextFor(items[i]);
+					var theVm = theContextFor.$data;
+					var theNestingLevel = theContextFor.$parents.length;
+					var isAlreadyInArray = false;
+					for (var j = 0; j < viewModels.length; j++)
+						if (viewModels[j].viewmodel == theVm)
+							isAlreadyInArray = true;
+					if (!isAlreadyInArray)
+						viewModels.push({ viewmodel: theVm, level: theNestingLevel });
 				}
-				catch(toBeIgnoredExc){}
+				catch (toBeIgnoredExc) { }
 			}
-			
-			if(!viewModels.length){
+
+			if (!viewModels.length) {
 				return;
 			}
 			//add extender to each observable/array/computed that will log changes 
-			for(var k=0;k<viewModels.length;k++){
-				var tempVm=viewModels[k].viewmodel;
-				var nestingLevel=viewModels[k].level;
+			for (var k = 0; k < viewModels.length; k++) {
+				var tempVm = viewModels[k].viewmodel;
+				var nestingLevel = viewModels[k].level;
 				for (var vmProperty in tempVm) {
-					try{
-						if (!tempVm.hasOwnProperty(vmProperty)) 
-							continue;	
-						if(tempVm[vmProperty]===null || tempVm[vmProperty]===undefined)
+					try {
+						if (!tempVm.hasOwnProperty(vmProperty))
 							continue;
-						if(!ko.isSubscribable(tempVm[vmProperty]))
+						if (tempVm[vmProperty] === null || tempVm[vmProperty] === undefined)
 							continue;
-						tempVm[vmProperty].extend({ChromeExtensionLogChange: {propName:vmProperty,nestingLevel:nestingLevel}});
+						if (!ko.isSubscribable(tempVm[vmProperty]))
+							continue;
+						tempVm[vmProperty].extend({ ChromeExtensionLogChange: { propName: vmProperty, nestingLevel: nestingLevel } });
 					}
-					catch(unableToExtendException){
-						console.log("Unable to extend the viewmodel",vmProperty,tempVm);
+					catch (unableToExtendException) {
+						console.log("Unable to extend the viewmodel", vmProperty, tempVm);
 					}
 				}
 			}
 		}
-		catch(err){
-			console.error(err);	
+		catch (err) {
+			console.error(err);
 		}
 	};
-	
-	var chromeExtensionEvalCallback=function(promise){
+
+	var chromeExtensionEvalCallback = function (promise) {
 		//disable the button so you can only attach the extender once
-		$("#enableTracing").text("Tracing enabled").attr("disabled","disabled");
+		$("#enableTracing").text("Tracing enabled").attr("disabled", "disabled");
 	};
-	
-	$("#enableTracing").click(function(){
-		chromeExtension.eval(attachLoggingExtender,true,chromeExtensionEvalCallback);
+
+	$("#enableTracing").click(function () {
+		chromeExtension.eval(attachLoggingExtender, true, chromeExtensionEvalCallback);
 	});
-	chromeExtension.watchRefresh(function(){
+	chromeExtension.watchRefresh(function () {
 		$("#enableTracing").text("Enable Tracing").removeAttr("disabled");
 	});
-
 });
