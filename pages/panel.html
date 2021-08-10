@@ -4,18 +4,20 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<style>
 		.spacer {
-			margin-top: 40px; 
+			margin-top: 40px;
 		}
+
 		body {
 			font-size: 0.9rem;
 		}
-		#timelineImg{
+
+		#timelineImg {
 			width: 650px;
 			height: 300px;
 		}
-		
+
 		@media all and (max-width: 800px) {
-			#timelineImg{
+			#timelineImg {
 				width: 450px;
 				height: 200px;
 			}
@@ -27,8 +29,10 @@
 		<div class="row">
 			<div class="offset-lg-1 col-lg-10">
 				<p>
-					When you enable tracing, the extension will attach a <a href="http://knockoutjs.com/documentation/extenders.html">extender</a> to every subscribable in every viewmodel that is on the page on that moment.<br/>
-					When a observable or computed changes, you can see the changes in the console. 
+					When you enable tracing, the extension will attach a <a
+						href="http://knockoutjs.com/documentation/extenders.html">extender</a> to every subscribable in
+					every viewmodel that is on the page on that moment.<br />
+					When a observable or computed changes, you can see the changes in the console.
 				<p>
 			</div>
 		</div>
@@ -41,16 +45,18 @@
 			<div class="offset-lg-1 col-lg-10">
 				<h4>Donate</h4>
 				<div>
-					There is a paypal button in the options of the extension. 
+					There is a paypal button in the options of the extension.
 				</div>
 				<h4>Tips</h4>
 				<div>
-					<p>The extension uses <code>console.debug</code> so you can use the 'debug' logging category for filtering.</p>
-					<img src="img/consoledebug.jpg" alt="console debug"/>
+					<p>The extension uses <code>console.debug</code> so you can use the 'debug' logging category for
+						filtering.</p>
+					<img src="img/consoledebug.jpg" alt="console debug" />
 				</div>
 				<div class="spacer">
-					<p>Changes to an observable are also visible in the timeline. This is done by the <code>console.timeStamp</code> method.</p>
-					<img src="img/markedTimeline.jpg" alt="console debug" id="timelineImg"/>
+					<p>Changes to an observable are also visible in the timeline. This is done by the
+						<code>console.timeStamp</code> method.</p>
+					<img src="img/markedTimeline.jpg" alt="console debug" id="timelineImg" />
 				</div>
 			</div>
 		</div>
@@ -61,7 +67,7 @@
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
-		</div>		
+		</div>
 	</div>
 	<script src="js/lib/jquery-3.6.0.min.js"></script>
 	<script src="js/lib/bootstrap.bundle.min.js"></script>

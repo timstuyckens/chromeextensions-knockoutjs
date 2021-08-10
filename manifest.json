@@ -7,9 +7,13 @@
     "96": "icons/logo-96.png"
   },
   "devtools_page": "pages/devtools.html",
-  "permissions": ["tabs"],
-   "background": {
-    "scripts": ["background.js"]
+  "permissions": [
+    "tabs"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
   },
   "manifest_version": 2,
   "options_ui": {
