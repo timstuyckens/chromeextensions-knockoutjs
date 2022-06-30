@@ -11,11 +11,9 @@
     "tabs"
   ],
   "background": {
-    "scripts": [
-      "background.js"
-    ]
+    "service_worker": "background.js"
   },
-  "manifest_version": 2,
+  "manifest_version": 3,
   "options_ui": {
     "page": "pages/options.html",
     "open_in_tab": true
