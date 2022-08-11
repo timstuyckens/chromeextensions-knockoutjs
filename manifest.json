@@ -7,9 +7,7 @@
     "96": "icons/logo-96.png"
   },
   "devtools_page": "pages/devtools.html",
-  "permissions": [
-    "tabs"
-  ],
+  "permissions": [],
   "background": {
     "service_worker": "background.js"
   },
