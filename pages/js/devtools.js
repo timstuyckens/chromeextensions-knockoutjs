@@ -1,12 +1,35 @@
 // The function is executed in the context of the inspected page.
 var page_getKnockoutInfo = function (shouldSerialize) {
 	"use strict";
+	/**
+	 * Print to console a disclaimer that
+	 * no knockout instance was found on a page
+	 * reprints to console on every failed inspection (if no ko found)
+	 */
+	function knockoutNotFoundDisclaimer() {
+		// knockout not found in any way
+		const label = "Knockoutjs Context Debugger: Knockout.js not found"
+		console.group(label)
+		console.info(
+			"Knockout.js was not found at global context (window.ko) nor through require.js (require.defined('ko')/require.defined('knockout')).",
+			"Maybe you are using iFrames, if so, browse to the url of the frame and try again.",
+			"If you are using ECMA module imports, make sure knockout is available at global context with:"
+		)
+		console.log(`
+			import ko from "knockout"
+			...
+			window.ko = ko;
+		`)
+		console.groupEnd(label)
+	};
+
 	var debug = function (m) {
 		//console.log(m);
 	};
 	var ko = window.ko;
 
 	if (!ko) {
+		// try fetching ko with requirejs
 		if (typeof window.require === 'function') {
 			var isDefinedAvailable = typeof window.require.defined === 'function';
 			try {
@@ -22,8 +45,11 @@ var page_getKnockoutInfo = function (shouldSerialize) {
 				} catch (e) { /*ingore */ }
 			}
 		}
+		// could not find ko library instance with window nor require.
+		// Then fallback to this message, print to console
 		if (!ko) {
-			return { error: "knockout.js is not used in the page (ko is undefined). Maybe you are using iFrames, if so, browse to the url of the frame and try again." };
+			knockoutNotFoundDisclaimer()
+			return { error: "Knockout.js was not found at global context (window.ko) nor through require.js (require.defined('ko')/require.defined('knockout')). For details please see console output." };
 		}
 	}
 
